@@ -56,6 +56,10 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
     setIngredients((prev) => prev.filter((_, i) => i !== index))
   }
 
+  function handleDialogClick(event) {
+    if (event.target === event.currentTarget) onClose()
+  }
+
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
@@ -98,7 +102,7 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
   }
 
   return (
-    <dialog ref={dialogRef} onClose={onClose}>
+    <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
       <form onSubmit={handleSubmit}>
         <h2>Add your own recipe</h2>
 

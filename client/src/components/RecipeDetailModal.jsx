@@ -26,9 +26,13 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
     }
   }, [recipe])
 
+  function handleDialogClick(event) {
+    if (event.target === event.currentTarget) onClose()
+  }
+
   if (!recipe) {
     // Keep the dialog mounted (closed) so the closing animation/native behaviour works cleanly.
-    return <dialog ref={dialogRef} onClose={onClose} />
+    return <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick} />
   }
 
   const handleAdd = async () => {
@@ -38,7 +42,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
   }
 
   return (
-    <dialog ref={dialogRef} onClose={onClose}>
+    <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
       <div>
         <h2 className="detail-title">{recipe.name}</h2>
         <p className="detail-meta">
