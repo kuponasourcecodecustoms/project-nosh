@@ -1,0 +1,5 @@
+node_modules/
+server/nosh.db
+server/nosh.db-shm
+server/nosh.db-wal
+*.log
