@@ -26,7 +26,9 @@ app.get("/api/recipes", (req, res) => {
     recipes = recipes.filter((r) => dietary.every((d) => r.dietary.includes(d)));
   }
   if (mealType.length) {
-    recipes = recipes.filter((r) => mealType.some((m) => r.mealType.includes(m)));
+    recipes = recipes.filter((r) =>
+      mealType.some((m) => (m === "own" ? r.isCustom : r.mealType.includes(m)))
+    );
   }
   if (q) {
     recipes = recipes.filter((r) => r.name.toLowerCase().includes(q));

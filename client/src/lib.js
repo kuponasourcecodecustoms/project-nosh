@@ -13,6 +13,7 @@ export const MEAL_TYPE_OPTIONS = [
   { key: 'lunch', label: 'Lunch' },
   { key: 'dinner', label: 'Dinner' },
   { key: 'dessert', label: 'Dessert' },
+  { key: 'own', label: 'Own recipes' }
 ]
 
 export function capitalise(s) {
