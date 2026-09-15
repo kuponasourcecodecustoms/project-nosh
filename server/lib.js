@@ -50,6 +50,8 @@ function buildShoppingList(plannedRecipes, pantryHaveSet) {
         groups.set(groupKey, {
           item: ing.item,
           unit: ing.unit || null,
+          recipeQuantity: 0,
+          hasRecipeQuantity: false,
           quantity: 0,
           hasQuantity: false,
           sources: new Set(),
@@ -59,6 +61,8 @@ function buildShoppingList(plannedRecipes, pantryHaveSet) {
       g.sources.add(recipe.name);
 
       if (typeof ing.quantity === "number") {
+        g.recipeQuantity += ing.quantity;
+        g.hasRecipeQuantity = true;
         g.quantity += ing.quantity * multiplier;
         g.hasQuantity = true;
       }
@@ -70,6 +74,7 @@ function buildShoppingList(plannedRecipes, pantryHaveSet) {
     return {
       item: g.item,
       unit: g.unit,
+      recipeQuantity: g.hasRecipeQuantity ? roundQty(g.recipeQuantity) : null,
       quantity: g.hasQuantity ? roundQty(g.quantity) : null,
       fromRecipes: Array.from(g.sources),
       haveIt: pantryHaveSet.has(key),

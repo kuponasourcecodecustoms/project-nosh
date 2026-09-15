@@ -33,21 +33,21 @@ export default function App() {
     if (view !== 'recipes') setPendingPlan(null)
   }
 
-  async function handleAssignSlot(dayIndex, mealSlot, recipeId) {
-    await api.setPlanSlot(dayIndex, mealSlot, recipeId)
+  async function handleAssignSlot(dayIndex, mealSlot, recipeId, serves) {
+    await api.setPlanSlot(dayIndex, mealSlot, recipeId, serves)
     refreshPlan()
     refreshShoppingList()
   }
 
   async function handleQuickAddToPending(recipe) {
     if (!pendingPlan) return
-    await handleAssignSlot(pendingPlan.dayIndex, pendingPlan.mealSlot, recipe.id)
+    await handleAssignSlot(pendingPlan.dayIndex, pendingPlan.mealSlot, recipe.id, recipe.serves)
     setPendingPlan(null)
     setActiveView('plan')
   }
 
-  async function handleAddToPlanFromDetail(dayIndex, mealSlot, recipeId) {
-    await handleAssignSlot(dayIndex, mealSlot, recipeId)
+  async function handleAddToPlanFromDetail(dayIndex, mealSlot, recipeId, serves) {
+    await handleAssignSlot(dayIndex, mealSlot, recipeId, serves)
     setDetailRecipe(null)
     setActiveView('plan')
   }
@@ -61,6 +61,11 @@ export default function App() {
     await api.clearPlanSlot(dayIndex, mealSlot)
     refreshPlan()
     refreshShoppingList()
+  }
+
+  async function handleUpdateServes(dayIndex, mealSlot, recipeId, serves) {
+    if (!Number.isInteger(serves) || serves < 1) return
+    await handleAssignSlot(dayIndex, mealSlot, recipeId, serves)
   }
 
   async function handleClearPlan() {
@@ -110,7 +115,13 @@ export default function App() {
         )}
 
         {activeView === 'plan' && (
-          <PlanView plan={plan} onAddSlot={handleRequestSlot} onRemoveSlot={handleRemoveSlot} onClearPlan={handleClearPlan} />
+          <PlanView
+            plan={plan}
+            onAddSlot={handleRequestSlot}
+            onRemoveSlot={handleRemoveSlot}
+            onUpdateServes={handleUpdateServes}
+            onClearPlan={handleClearPlan}
+          />
         )}
 
         {activeView === 'shopping' && <ShoppingListView list={shoppingList} onTogglePantry={handleTogglePantry} />}

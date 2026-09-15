@@ -5,6 +5,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
   const dialogRef = useRef(null)
   const [dayIndex, setDayIndex] = useState(0)
   const [mealSlot, setMealSlot] = useState('dinner')
+  const [plannedServes, setPlannedServes] = useState(2)
   const [saving, setSaving] = useState(false)
 
   useEffect(() => {
@@ -14,6 +15,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
     else if (recipe.mealType.includes('breakfast')) setMealSlot('breakfast')
     else setMealSlot('dinner')
     setDayIndex(0)
+    setPlannedServes(recipe.serves)
   }, [recipe])
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
 
   const handleAdd = async () => {
     setSaving(true)
-    await onAddToPlan(dayIndex, mealSlot, recipe.id)
+    await onAddToPlan(dayIndex, mealSlot, recipe.id, Number(plannedServes) || recipe.serves)
     setSaving(false)
   }
 
@@ -93,6 +95,16 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
                 </option>
               ))}
             </select>
+            <label className="serves-picker">
+              <span>Serves</span>
+              <input
+                type="number"
+                min="1"
+                step="1"
+                value={plannedServes}
+                onChange={(e) => setPlannedServes(e.target.value)}
+              />
+            </label>
           </div>
           <button type="button" className="btn btn-primary" onClick={handleAdd} disabled={saving}>
             {saving ? 'Adding…' : 'Add to plan'}

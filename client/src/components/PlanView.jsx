@@ -1,7 +1,7 @@
 import PlanDay from './PlanDay.jsx'
 import { todayIndex } from '../lib.js'
 
-export default function PlanView({ plan, onAddSlot, onRemoveSlot, onClearPlan }) {
+export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes, onClearPlan }) {
   if (!plan) return null
   const today = todayIndex()
 
@@ -11,7 +11,14 @@ export default function PlanView({ plan, onAddSlot, onRemoveSlot, onClearPlan })
 
       <div className="plan-days">
         {plan.week.map((day) => (
-          <PlanDay key={day.dayIndex} day={day} isToday={day.dayIndex === today} onAddSlot={onAddSlot} onRemoveSlot={onRemoveSlot} />
+          <PlanDay
+            key={day.dayIndex}
+            day={day}
+            isToday={day.dayIndex === today}
+            onAddSlot={onAddSlot}
+            onRemoveSlot={onRemoveSlot}
+            onUpdateServes={onUpdateServes}
+          />
         ))}
       </div>
 

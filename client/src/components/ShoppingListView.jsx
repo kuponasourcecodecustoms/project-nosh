@@ -47,11 +47,16 @@ export default function ShoppingListView({ list, onTogglePantry }) {
                   {capitalise(item.item)}
                 </label>
                 {item.quantity !== null && (
-                  <span className="shop-item-qty">
-                    {' '}
-                    — {item.quantity}
-                    {item.unit ? ` ${item.unit}` : ''}
-                  </span>
+                  <div className="shop-item-amounts">
+                    <span>
+                      <small>Recipe amount</small>
+                      {item.recipeQuantity}{item.unit ? ` ${item.unit}` : ''}
+                    </span>
+                    <span className="shop-item-qty">
+                      <small>Shopping amount</small>
+                      {item.quantity}{item.unit ? ` ${item.unit}` : ''}
+                    </span>
+                  </div>
                 )}
                 <div className="shop-item-sources">For: {item.fromRecipes.join(', ')}</div>
               </div>

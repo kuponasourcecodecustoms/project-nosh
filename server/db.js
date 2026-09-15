@@ -35,6 +35,7 @@ function migrate() {
       day_of_week INTEGER NOT NULL,
       meal_slot TEXT NOT NULL,                  -- breakfast | lunch | dinner
       recipe_id TEXT NOT NULL REFERENCES recipes(id) ON DELETE CASCADE,
+      serves INTEGER,
       PRIMARY KEY (day_of_week, meal_slot)
     );
 

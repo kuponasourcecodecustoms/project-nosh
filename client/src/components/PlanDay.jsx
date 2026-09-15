@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { MEAL_SLOTS } from '../lib.js'
 
-export default function PlanDay({ day, isToday, onAddSlot, onRemoveSlot }) {
+export default function PlanDay({ day, isToday, onAddSlot, onRemoveSlot, onUpdateServes }) {
   const [open, setOpen] = useState(isToday)
   const filledCount = MEAL_SLOTS.filter((s) => day.meals[s]).length
 
@@ -21,6 +21,16 @@ export default function PlanDay({ day, isToday, onAddSlot, onRemoveSlot }) {
             {day.meals[slot] ? (
               <div className="meal-slot-filled">
                 <span className="meal-slot-recipe-name">{day.meals[slot].name}</span>
+                <label className="planned-serves">
+                  <span>Serves</span>
+                  <input
+                    type="number"
+                    min="1"
+                    step="1"
+                    defaultValue={day.meals[slot].plannedServes || day.meals[slot].serves}
+                    onBlur={(e) => onUpdateServes(day.dayIndex, slot, day.meals[slot].id, Number(e.target.value))}
+                  />
+                </label>
                 <button type="button" className="btn-danger-text" onClick={() => onRemoveSlot(day.dayIndex, slot)}>
                   Remove
                 </button>

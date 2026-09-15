@@ -99,7 +99,7 @@ app.put("/api/preferences", (req, res) => {
 // ---------- Weekly plan ----------
 
 app.get("/api/plan", (req, res) => {
-  const entries = db.prepare("SELECT day_of_week, meal_slot, recipe_id FROM plan_entries").all();
+  const entries = db.prepare("SELECT day_of_week, meal_slot, recipe_id, serves FROM plan_entries").all();
   const recipeIds = [...new Set(entries.map((e) => e.recipe_id))];
   const recipesById = {};
   if (recipeIds.length) {
@@ -114,7 +114,8 @@ app.get("/api/plan", (req, res) => {
     entries
       .filter((e) => e.day_of_week === dayIndex)
       .forEach((e) => {
-        meals[e.meal_slot] = recipesById[e.recipe_id] || null;
+        const recipe = recipesById[e.recipe_id];
+        meals[e.meal_slot] = recipe ? { ...recipe, plannedServes: e.serves || recipe.serves } : null;
       });
     return { dayIndex, dayName, meals };
   });
@@ -122,21 +123,25 @@ app.get("/api/plan", (req, res) => {
   res.json({ week });
 });
 
-// PUT /api/plan/:dayIndex/:mealSlot  { recipeId }
+// PUT /api/plan/:dayIndex/:mealSlot  { recipeId, serves }
 app.put("/api/plan/:dayIndex/:mealSlot", (req, res) => {
   const dayIndex = Number(req.params.dayIndex);
   const mealSlot = req.params.mealSlot;
-  const { recipeId } = req.body || {};
+  const { recipeId, serves } = req.body || {};
 
   if (!(dayIndex >= 0 && dayIndex <= 6)) return res.status(400).json({ error: "Invalid day." });
   if (!MEAL_SLOTS.includes(mealSlot)) return res.status(400).json({ error: "Invalid meal slot." });
-  const recipe = db.prepare("SELECT id FROM recipes WHERE id = ?").get(recipeId);
+  const recipe = db.prepare("SELECT id, serves AS recipe_serves FROM recipes WHERE id = ?").get(recipeId);
   if (!recipe) return res.status(404).json({ error: "Recipe not found." });
+  const plannedServes = serves === undefined ? recipe.recipe_serves : Number(serves);
+  if (!Number.isInteger(plannedServes) || plannedServes < 1) {
+    return res.status(400).json({ error: "Serves must be a whole number of at least 1." });
+  }
 
   db.prepare(`
-    INSERT INTO plan_entries (day_of_week, meal_slot, recipe_id) VALUES (?, ?, ?)
-    ON CONFLICT(day_of_week, meal_slot) DO UPDATE SET recipe_id = excluded.recipe_id
-  `).run(dayIndex, mealSlot, recipeId);
+    INSERT INTO plan_entries (day_of_week, meal_slot, recipe_id, serves) VALUES (?, ?, ?, ?)
+    ON CONFLICT(day_of_week, meal_slot) DO UPDATE SET recipe_id = excluded.recipe_id, serves = excluded.serves
+  `).run(dayIndex, mealSlot, recipeId, plannedServes);
 
   res.status(204).end();
 });
@@ -178,7 +183,7 @@ app.put("/api/pantry/:itemKey", (req, res) => {
 // ---------- Shopping list ----------
 
 app.get("/api/shopping-list", (req, res) => {
-  const entries = db.prepare("SELECT recipe_id FROM plan_entries").all();
+  const entries = db.prepare("SELECT recipe_id, serves FROM plan_entries").all();
   const recipeIds = [...new Set(entries.map((e) => e.recipe_id))];
 
   if (!recipeIds.length) {
@@ -187,7 +192,15 @@ app.get("/api/shopping-list", (req, res) => {
 
   const placeholders = recipeIds.map(() => "?").join(",");
   const rows = db.prepare(`SELECT * FROM recipes WHERE id IN (${placeholders})`).all(...recipeIds);
-  const recipes = rows.map(recipeRowToJson);
+  const recipesById = Object.fromEntries(rows.map((row) => [row.id, recipeRowToJson(row)]));
+  const recipes = entries
+    .map((entry) => {
+      const recipe = recipesById[entry.recipe_id];
+      if (!recipe) return null;
+      const plannedServes = entry.serves || recipe.serves;
+      return { ...recipe, servesMultiplier: plannedServes / recipe.serves };
+    })
+    .filter(Boolean);
 
   const pantryRows = db.prepare("SELECT item_key FROM pantry_items WHERE have_it = 1").all();
   const pantrySet = new Set(pantryRows.map((r) => r.item_key));
@@ -228,6 +241,16 @@ app.get(/^(?!\/api\/).*/, (req, res) => {
   res.sendFile(indexPath);
 });
 
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Nosh server running at http://localhost:${PORT}`);
 });
+
+function shutdown(signal) {
+  server.close(() => {
+    db.close();
+    process.exit(0);
+  });
+}
+
+process.once("SIGINT", () => shutdown("SIGINT"));
+process.once("SIGTERM", () => shutdown("SIGTERM"));

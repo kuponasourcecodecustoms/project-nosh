@@ -28,8 +28,11 @@ export const api = {
   setPreferences: (dietary) => request('/preferences', { method: 'PUT', body: JSON.stringify({ dietary }) }),
 
   getPlan: () => request('/plan'),
-  setPlanSlot: (dayIndex, mealSlot, recipeId) =>
-    request(`/plan/${dayIndex}/${mealSlot}`, { method: 'PUT', body: JSON.stringify({ recipeId }) }),
+  setPlanSlot: (dayIndex, mealSlot, recipeId, serves) =>
+    request(`/plan/${dayIndex}/${mealSlot}`, {
+      method: 'PUT',
+      body: JSON.stringify({ recipeId, serves }),
+    }),
   clearPlanSlot: (dayIndex, mealSlot) => request(`/plan/${dayIndex}/${mealSlot}`, { method: 'DELETE' }),
   clearPlan: () => request('/plan', { method: 'DELETE' }),
 

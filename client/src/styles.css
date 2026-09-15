@@ -526,6 +526,15 @@ main#views { padding: 8px 20px 20px; }
 }
 
 .meal-slot-recipe-name { font-weight: 700; }
+.planned-serves { display: flex; align-items: center; gap: 6px; margin-left: auto; }
+.planned-serves span { color: var(--text-muted); font-size: 0.78rem; font-weight: 700; }
+.planned-serves input {
+  width: 58px;
+  padding: 5px 7px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  background: var(--surface-sunk);
+}
 
 /* ---------- Shopping list ---------- */
 
@@ -561,9 +570,13 @@ main#views { padding: 8px 20px 20px; }
 .shop-item-main { flex: 1; }
 .shop-item-name { font-weight: 700; }
 .shop-item.is-have .shop-item-name,
-.shop-item.is-have .shop-item-qty { text-decoration: line-through; color: var(--text-muted); }
+.shop-item.is-have .shop-item-qty,
+.shop-item.is-have .shop-item-amounts { text-decoration: line-through; color: var(--text-muted); }
 
-.shop-item-qty { color: var(--deep-teal); font-weight: 700; }
+.shop-item-amounts { display: grid; grid-template-columns: repeat(2, minmax(90px, 1fr)); gap: 12px; margin-top: 6px; }
+.shop-item-amounts span { color: var(--text-muted); font-weight: 700; }
+.shop-item-amounts small { display: block; font-size: 0.72rem; font-weight: 600; }
+.shop-item-qty { color: var(--deep-teal) !important; }
 .shop-item-sources { font-size: 0.78rem; color: var(--text-muted); margin-top: 2px; }
 
 /* ---------- Modals ---------- */
@@ -636,6 +649,15 @@ fieldset legend { font-weight: 700; font-size: 0.88rem; margin-bottom: 6px; padd
 .plan-picker-row { display: flex; gap: 8px; }
 .plan-picker-row select {
   flex: 1;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunk);
+}
+.serves-picker { display: block; min-width: 76px; }
+.serves-picker span { display: block; font-size: 0.78rem; font-weight: 700; margin-bottom: 3px; }
+.serves-picker input {
+  width: 100%;
   padding: 8px 10px;
   border: 1px solid var(--border);
   border-radius: var(--radius-control);
