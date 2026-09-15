@@ -321,6 +321,17 @@ main#views { padding: 8px 20px 20px; }
 }
 .filter-row { margin-bottom: 10px; }
 .filter-row:last-child { margin-bottom: 0; }
+.sort-row { display: flex; align-items: center; justify-content: flex-end; gap: 8px; }
+.sort-row label,
+.view-sort-row label { color: var(--text-muted); font-size: 0.85rem; font-weight: 700; }
+.sort-row select,
+.view-sort-row select {
+  padding: 6px 9px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-control);
+  background: var(--surface-sunk);
+  color: var(--text);
+}
 .filter-search-row {
   display: flex;
   align-items: center;
@@ -440,6 +451,14 @@ main#views { padding: 8px 20px 20px; }
   color: var(--text-muted);
   text-align: center;
   padding: 30px 10px;
+}
+
+.view-sort-row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
 }
 
 /* ---------- Plan view ---------- */

@@ -17,7 +17,14 @@ export default function RecipesView({
   onAddRecipe,
 }) {
   const [searchValue, setSearchValue] = useState('')
+  const [sortOrder, setSortOrder] = useState('default')
   const debounceRef = useRef()
+
+  const sortedRecipes = [...recipes].sort((a, b) => {
+    if (sortOrder === 'default') return 0
+    const comparison = a.name.localeCompare(b.name)
+    return sortOrder === 'za' ? -comparison : comparison
+  })
 
   useEffect(() => {
     clearTimeout(debounceRef.current)
@@ -53,6 +60,14 @@ export default function RecipesView({
           <span className="filter-label">Meal:</span>
           <ChipRow options={MEAL_TYPE_OPTIONS} selected={mealTypeFilter} onToggle={onToggleMealType} ariaLabel="Meal type" />
         </div>
+        <div className="filter-row sort-row">
+          <label htmlFor="recipe-sort">Sort by:</label>
+          <select id="recipe-sort" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
+            <option value="default">Default</option>
+            <option value="az">Name (A-Z)</option>
+            <option value="za">Name (Z-A)</option>
+          </select>
+        </div>
       </div>
 
       {pendingPlan && (
@@ -65,7 +80,7 @@ export default function RecipesView({
       )}
 
       <div className="recipe-list" aria-live="polite">
-        {recipes.map((recipe) => (
+        {sortedRecipes.map((recipe) => (
           <RecipeCard
             key={recipe.id}
             recipe={recipe}
