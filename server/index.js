@@ -7,7 +7,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 
 app.use(express.json());
-app.use(express.static(path.join(__dirname, "..", "public")));
+app.use(express.static(path.join(__dirname, "public")));
 
 const DIETARY_TAGS = ["vegetarian", "vegan", "gluten-free", "dairy-free"];
 
@@ -213,9 +213,19 @@ function slugify(s) {
     .replace(/(^-|-$)/g, "");
 }
 
-// SPA fallback for any non-API route
+// SPA fallback for any non-API route (serves the built React app in production)
 app.get(/^(?!\/api\/).*/, (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "public", "index.html"));
+  const indexPath = path.join(__dirname, "public", "index.html");
+  if (!require("fs").existsSync(indexPath)) {
+    return res
+      .status(200)
+      .send(
+        "Nosh API is running on this port, but the client hasn't been built yet.\n" +
+          "Run `npm run build` (or use `npm run dev` for hot-reloading development), " +
+          "then reload this page."
+      );
+  }
+  res.sendFile(indexPath);
 });
 
 app.listen(PORT, () => {

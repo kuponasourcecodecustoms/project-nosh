@@ -1,21 +1,29 @@
 # Nosh — meal planner demo
 
-A working demo built against the Enablis "Project Nosh" candidate brief. It's a small
-layered web app: a plain HTML/CSS/JS client talking to a Node/Express API, backed by
-SQLite.
+A working demo built against the Enablis "Project Nosh" candidate brief. It's a
+layered web app: a **React (Vite)** client talking to a **Node/Express** API, backed
+by SQLite.
 
 ## Run it
 
 ```bash
-npm install
-npm start
+npm install     # installs the root (API) deps and the client workspace in one go
+npm run dev      # API on :4000, React dev server on :5173 (with hot reload)
 ```
 
-Then open **http://localhost:4000**. The database (`server/nosh.db`) is created and
-seeded from `server/recipes.seed.json` the first time you run it — delete that file
-to reset to a clean slate.
+Open **http://localhost:5173** — the client dev server proxies `/api/*` requests to
+the Express API, so you only ever load one origin.
 
-No build step, no framework tooling — just Node.
+For a production-style run (built assets served by Express on a single port):
+
+```bash
+npm run build    # builds the React app into server/public
+npm start        # serves the API + built client together on :4000
+```
+
+The database (`server/nosh.db`) is created and seeded from
+`server/recipes.seed.json` the first time the server runs — delete that file to
+reset to a clean slate.
 
 ## What it covers (the baseline)
 
@@ -48,21 +56,42 @@ plan, so it persists across weeks — the app slowly learns your regular staples
 
 ```
 project-nosh/
-├── server/
-│   ├── index.js        Express app: all /api routes
-│   ├── db.js            SQLite schema + one-time seeding from the JSON file
-│   ├── lib.js            Row<->JSON mapping + shopping-list aggregation logic
-│   └── recipes.seed.json Copy of the provided starter recipes
-├── public/
-│   ├── index.html        Single page, three views toggled by JS (no router needed)
-│   ├── styles.css         Nosh brand tokens (colour/type from the brand slide)
-│   └── app.js             All client logic: fetch calls + DOM rendering, no framework
-└── package.json
+├── server/                    Express API (unchanged regardless of client)
+│   ├── index.js                All /api routes + static-serves server/public in prod
+│   ├── db.js                    SQLite schema + one-time seeding from the JSON file
+│   ├── lib.js                    Row<->JSON mapping + shopping-list aggregation logic
+│   └── recipes.seed.json         Copy of the provided starter recipes
+├── client/                    React (Vite) app — the only UI layer
+│   ├── vite.config.js           Dev proxy to :4000, prod build -> ../server/public
+│   ├── index.html
+│   └── src/
+│       ├── main.jsx               Entry point
+│       ├── App.jsx                 Top-level state + view routing (no router needed
+│       │                            for 3 tabs — plain useState)
+│       ├── api.js                  fetch wrapper for every /api call
+│       ├── lib.js                  Shared constants/formatters
+│       ├── hooks/useNoshData.js    Data-fetching hooks (recipes, plan, shopping list,
+│       │                            preferences), each with a refetch() escape hatch
+│       │                            used after mutations
+│       ├── components/
+│       │   ├── TopBar.jsx, TabBar.jsx, ChipRow.jsx      layout + reusable chip toggle
+│       │   ├── RecipesView.jsx, RecipeCard.jsx           browse/search/filter recipes
+│       │   ├── RecipeDetailModal.jsx                      full recipe + plan picker
+│       │   ├── RecipeFormModal.jsx                        add-your-own-recipe form
+│       │   ├── PlanView.jsx, PlanDay.jsx                  the weekly planner
+│       │   └── ShoppingListView.jsx                       aggregated list + pantry tick
+│       └── styles.css              Nosh brand tokens (colour/type from the brand slide)
+└── package.json                npm workspace root: orchestrates server + client
 ```
 
 **Client / API split**: the client only ever talks to `/api/*` over `fetch`; there's
-no server-rendering of app state, so the same API could sit behind a different client
+no server-rendering of app state, so this API could sit behind a different client
 later without change.
+
+**State management**: plain React hooks (`useState`, small custom hooks per resource
+in `hooks/useNoshData.js`). No Redux/Context needed at this size — `App.jsx` owns the
+handful of cross-cutting bits (active tab, which recipe is being planned) and passes
+data + callbacks down as props.
 
 **Storage**: SQLite via `better-sqlite3` (synchronous, no async ceremony for a
 single-user local demo, per the brief's "single user, no login" ground rule).
@@ -87,4 +116,6 @@ brief calls out an audience on older, smaller phones.
 - No auth/multi-user (per the ground rules).
 - No unit conversion in the shopping list (see above).
 - No image uploads for custom recipes — text only.
+- No client-side router — three tabs don't need one, and it keeps the dependency
+  list honest about what the app actually needs.
 - No offline/PWA support.
