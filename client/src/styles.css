@@ -1,6 +1,5 @@
 :root {
   --nosh-green: #62CC9B;
-  --nosh-green-dark: #46B384;
   --deep-teal: #3AA58F;
   --charcoal: #2E373E;
   --flame-coral: #F3764B;
@@ -240,6 +239,13 @@ main#views { padding: 8px 20px 20px; }
 }
 .filter-row { margin-bottom: 10px; }
 .filter-row:last-child { margin-bottom: 0; }
+.filter-search-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.filter-search-row input { min-width: 0; flex: 1; }
+.filter-search-row .link-btn { flex: none; white-space: nowrap; }
 .filter-label {
   font-weight: 700;
   font-size: 0.85rem;

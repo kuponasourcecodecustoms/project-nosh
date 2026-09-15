@@ -14,6 +14,7 @@ export default function RecipesView({
   onCancelPending,
   onOpenRecipe,
   onQuickAddToPending,
+  onAddRecipe,
 }) {
   const [searchValue, setSearchValue] = useState('')
   const debounceRef = useRef()
@@ -28,12 +29,11 @@ export default function RecipesView({
   return (
     <section className="view is-active">
       <p className="view-lede">
-        Find something for tonight, or add one of your own. Set what suits your household once and we&rsquo;ll
-        remember it.
+        Find something for tonight, or add one of your own. Set what suits your household once and we&rsquo;ll remember it.
       </p>
 
       <div className="filter-panel">
-        <div className="filter-row">
+        <div className="filter-row filter-search-row">
           <input
             type="search"
             placeholder="Search recipes…"
@@ -41,6 +41,9 @@ export default function RecipesView({
             value={searchValue}
             onChange={(e) => setSearchValue(e.target.value)}
           />
+          <button type="button" className="link-btn" onClick={onAddRecipe}>
+            Add your own recipe
+          </button>
         </div>
         <div className="filter-row">
           <span className="filter-label">Suits us:</span>

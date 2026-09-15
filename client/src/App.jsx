@@ -89,7 +89,7 @@ export default function App() {
 
   return (
     <div className="app-shell">
-      <TopBar onAddRecipe={() => setShowAddRecipe(true)} />
+      <TopBar />
       <TabBar activeView={activeView} onChange={handleSwitchView} shoppingNeedCount={shoppingNeedCount} />
 
       <main id="views">
@@ -105,6 +105,7 @@ export default function App() {
             onCancelPending={() => setPendingPlan(null)}
             onOpenRecipe={setDetailRecipe}
             onQuickAddToPending={handleQuickAddToPending}
+            onAddRecipe={() => setShowAddRecipe(true)}
           />
         )}
 
