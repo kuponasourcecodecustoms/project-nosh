@@ -1,9 +1,9 @@
+import logo from '../img/Nosh Logo.png'
+
 export default function TopBar() {
   return (
     <header className="topbar">
-      <div className="wordmark" aria-label="Nosh">
-        <span className="wordmark-mark">n</span>osh
-      </div>
+      <img src={logo} alt="Nosh" className="brand-logo topbar-logo" />
     </header>
   )
 }

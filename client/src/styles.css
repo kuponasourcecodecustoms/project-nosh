@@ -82,24 +82,20 @@ a, .link-btn {
   padding: 18px 20px 8px;
 }
 
-.wordmark {
-  font-family: var(--font-head);
-  font-weight: 800;
-  font-size: 1.5rem;
-  color: var(--charcoal);
-  letter-spacing: -0.01em;
+.brand-logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
 }
-.wordmark-mark {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5em;
-  height: 1.5em;
-  border-radius: 50%;
-  background: var(--nosh-green);
-  color: var(--charcoal);
-  margin-right: 2px;
-  text-transform: lowercase;
+
+.topbar-logo {
+  width: 150px;
+}
+
+.mobile-wordmark {
+  margin-left: 16px;
+  width: 110px;
+  height: auto;
 }
 
 /* ---------- Buttons ---------- */

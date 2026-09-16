@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import logo from '../img/Nosh Logo.png'
 
 const TABS = [
   { key: 'recipes', icon: '🍲', label: 'Recipes' },
@@ -16,9 +17,7 @@ export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
 
   return (
     <nav className={'tabbar' + (menuOpen ? ' is-open' : '')} aria-label="Main sections">
-      <div className="mobile-wordmark" aria-label="Nosh">
-        <span className="wordmark-mark">n</span>osh
-      </div>
+      <img src={logo} alt="Nosh" className="brand-logo mobile-wordmark" />
       <button
         type="button"
         className="menu-toggle"

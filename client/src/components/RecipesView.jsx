@@ -36,7 +36,7 @@ export default function RecipesView({
   return (
     <section className="view is-active">
       <p className="view-lede">
-        Find something for tonight, or add one of your own. Set what suits your household once and we&rsquo;ll remember it.
+        Find something to eat, or add one of your own. Set what suits your household once and we&rsquo;ll remember it.
       </p>
 
       <div className="filter-panel">
