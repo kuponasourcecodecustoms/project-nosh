@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import PlanDay from './PlanDay.jsx'
-import { todayIndex } from '../lib.js'
+import { todayIndex } from '../util.js'
 
 export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes, onClearPlan }) {
   if (!plan) return null
@@ -28,3 +29,20 @@ export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes
     </section>
   )
 }
+
+PlanView.propTypes = {
+  plan: PropTypes.shape({
+    week: PropTypes.arrayOf(
+      PropTypes.shape({
+        dayIndex: PropTypes.number.isRequired,
+        dayName: PropTypes.string.isRequired,
+        meals: PropTypes.object.isRequired,
+      })
+    ).isRequired,
+  }),
+  onAddSlot: PropTypes.func.isRequired,
+  onRemoveSlot: PropTypes.func.isRequired,
+  onUpdateServes: PropTypes.func.isRequired,
+  onClearPlan: PropTypes.func.isRequired,
+}
+

@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { MEAL_SLOTS } from '../lib.js'
+import { MEAL_SLOTS } from '../constants.js'
 
 export default function PlanDay({ day, isToday, onAddSlot, onRemoveSlot, onUpdateServes }) {
   const [open, setOpen] = useState(isToday)
@@ -46,3 +47,23 @@ export default function PlanDay({ day, isToday, onAddSlot, onRemoveSlot, onUpdat
     </div>
   )
 }
+
+PlanDay.propTypes = {
+  day: PropTypes.shape({
+    dayIndex: PropTypes.number.isRequired,
+    dayName: PropTypes.string.isRequired,
+    meals: PropTypes.objectOf(
+      PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        serves: PropTypes.number,
+        plannedServes: PropTypes.number,
+      })
+    ).isRequired,
+  }).isRequired,
+  isToday: PropTypes.bool.isRequired,
+  onAddSlot: PropTypes.func.isRequired,
+  onRemoveSlot: PropTypes.func.isRequired,
+  onUpdateServes: PropTypes.func.isRequired,
+}
+

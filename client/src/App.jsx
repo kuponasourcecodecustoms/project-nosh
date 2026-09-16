@@ -6,7 +6,10 @@ import PlanView from './components/PlanView.jsx'
 import ShoppingListView from './components/ShoppingListView.jsx'
 import RecipeDetailModal from './components/RecipeDetailModal.jsx'
 import RecipeFormModal from './components/RecipeFormModal.jsx'
-import { usePreferences, useRecipes, usePlan, useShoppingList } from './hooks/useNoshData.js'
+import { usePreferences } from './hooks/usePreferences.js'
+import { useRecipes } from './hooks/useRecipes.js'
+import { usePlan } from './hooks/usePlan.js'
+import { useShoppingList } from './hooks/useShoppingList.js'
 import { api } from './api.js'
 
 export default function App() {

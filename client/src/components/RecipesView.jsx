@@ -1,7 +1,9 @@
+import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import ChipRow from './ChipRow.jsx'
 import RecipeCard from './RecipeCard.jsx'
-import { DAY_NAMES, DIETARY_TAGS, MEAL_TYPE_OPTIONS, capitalise } from '../lib.js'
+import { DAY_NAMES, DIETARY_TAGS, MEAL_TYPE_OPTIONS } from '../constants.js'
+import { capitalise } from '../util.js'
 
 export default function RecipesView({
   recipes,
@@ -97,3 +99,32 @@ export default function RecipesView({
     </section>
   )
 }
+
+RecipesView.propTypes = {
+  recipes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      name: PropTypes.string.isRequired,
+      serves: PropTypes.number.isRequired,
+      cuisine: PropTypes.string,
+      mealType: PropTypes.arrayOf(PropTypes.string).isRequired,
+      dietary: PropTypes.arrayOf(PropTypes.string).isRequired,
+      tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+      isCustom: PropTypes.bool,
+    })
+  ).isRequired,
+  dietaryPrefs: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onToggleDietary: PropTypes.func.isRequired,
+  mealTypeFilter: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onToggleMealType: PropTypes.func.isRequired,
+  onSearch: PropTypes.func.isRequired,
+  pendingPlan: PropTypes.shape({
+    dayIndex: PropTypes.number.isRequired,
+    mealSlot: PropTypes.string.isRequired,
+  }),
+  onCancelPending: PropTypes.func.isRequired,
+  onOpenRecipe: PropTypes.func.isRequired,
+  onQuickAddToPending: PropTypes.func.isRequired,
+  onAddRecipe: PropTypes.func.isRequired,
+}
+

@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import logo from '../img/Nosh Logo.png'
 
@@ -51,3 +52,10 @@ export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
     </nav>
   )
 }
+
+TabBar.propTypes = {
+  activeView: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+  shoppingNeedCount: PropTypes.number.isRequired,
+}
+

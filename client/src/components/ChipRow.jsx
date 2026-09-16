@@ -1,3 +1,5 @@
+import PropTypes from 'prop-types'
+
 export default function ChipRow({ options, selected, onToggle, ariaLabel }) {
   return (
     <div className="chip-row" role="group" aria-label={ariaLabel}>
@@ -14,3 +16,16 @@ export default function ChipRow({ options, selected, onToggle, ariaLabel }) {
     </div>
   )
 }
+
+ChipRow.propTypes = {
+  options: PropTypes.arrayOf(
+    PropTypes.shape({
+      key: PropTypes.string.isRequired,
+      label: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  selected: PropTypes.arrayOf(PropTypes.string).isRequired,
+  onToggle: PropTypes.func.isRequired,
+  ariaLabel: PropTypes.string.isRequired,
+}
+

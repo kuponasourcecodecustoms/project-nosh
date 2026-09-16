@@ -1,4 +1,5 @@
-import { capitalise, dietaryLabel } from '../lib.js'
+import PropTypes from 'prop-types'
+import { capitalise, dietaryLabel } from '../util.js'
 
 export default function RecipeCard({ recipe, isPendingSlot, onOpen, onQuickAdd }) {
   const handleQuickAdd = (e) => {
@@ -56,3 +57,20 @@ export default function RecipeCard({ recipe, isPendingSlot, onOpen, onQuickAdd }
     </article>
   )
 }
+
+RecipeCard.propTypes = {
+  recipe: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    serves: PropTypes.number.isRequired,
+    cuisine: PropTypes.string,
+    mealType: PropTypes.arrayOf(PropTypes.string).isRequired,
+    dietary: PropTypes.arrayOf(PropTypes.string).isRequired,
+    tags: PropTypes.arrayOf(PropTypes.string).isRequired,
+    isCustom: PropTypes.bool,
+  }).isRequired,
+  isPendingSlot: PropTypes.bool.isRequired,
+  onOpen: PropTypes.func.isRequired,
+  onQuickAdd: PropTypes.func.isRequired,
+}
+

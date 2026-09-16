@@ -1,5 +1,7 @@
+import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
-import { DAY_NAMES, MEAL_SLOTS, capitalise, dietaryLabel, formatIngredient } from '../lib.js'
+import { DAY_NAMES, MEAL_SLOTS } from '../constants.js'
+import { capitalise, dietaryLabel, formatIngredient } from '../util.js'
 
 export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDeleteRecipe }) {
   const dialogRef = useRef(null)
@@ -130,3 +132,21 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
     </dialog>
   )
 }
+
+RecipeDetailModal.propTypes = {
+  recipe: PropTypes.shape({
+    id: PropTypes.number,
+    name: PropTypes.string,
+    serves: PropTypes.number,
+    cuisine: PropTypes.string,
+    mealType: PropTypes.arrayOf(PropTypes.string),
+    dietary: PropTypes.arrayOf(PropTypes.string),
+    ingredients: PropTypes.arrayOf(PropTypes.object),
+    method: PropTypes.arrayOf(PropTypes.string),
+    isCustom: PropTypes.bool,
+  }),
+  onClose: PropTypes.func.isRequired,
+  onAddToPlan: PropTypes.func.isRequired,
+  onDeleteRecipe: PropTypes.func.isRequired,
+}
+

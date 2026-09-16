@@ -1,6 +1,7 @@
+import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import ChipRow from './ChipRow.jsx'
-import { DIETARY_TAGS, MEAL_TYPE_OPTIONS } from '../lib.js'
+import { DIETARY_TAGS, MEAL_TYPE_OPTIONS } from '../constants.js'
 
 const BLANK_INGREDIENT = { item: '', quantity: '', unit: '' }
 
@@ -203,3 +204,10 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
     </dialog>
   )
 }
+
+RecipeFormModal.propTypes = {
+  open: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onSave: PropTypes.func.isRequired,
+}
+

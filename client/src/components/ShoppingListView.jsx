@@ -1,5 +1,6 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { capitalise } from '../lib.js'
+import { capitalise } from '../util.js'
 
 export default function ShoppingListView({ list, onTogglePantry }) {
   const [sortOrder, setSortOrder] = useState('default')
@@ -85,3 +86,21 @@ export default function ShoppingListView({ list, onTogglePantry }) {
     </section>
   )
 }
+
+ShoppingListView.propTypes = {
+  list: PropTypes.shape({
+    recipeCount: PropTypes.number,
+    list: PropTypes.arrayOf(
+      PropTypes.shape({
+        item: PropTypes.string.isRequired,
+        haveIt: PropTypes.bool.isRequired,
+        quantity: PropTypes.number,
+        unit: PropTypes.string,
+        recipeQuantity: PropTypes.number,
+        fromRecipes: PropTypes.arrayOf(PropTypes.string).isRequired,
+      })
+    ),
+  }),
+  onTogglePantry: PropTypes.func.isRequired,
+}
+
