@@ -1,9 +1,16 @@
-import PropTypes from 'prop-types'
 import { useState } from 'react'
+import { api } from '../api.js'
+import { useShoppingList } from '../hooks/useShoppingList.js'
 import { capitalise } from '../util.js'
 
-export default function ShoppingListView({ list, onTogglePantry }) {
+export default function ShoppingListView() {
+  const { list, refreshShoppingList } = useShoppingList()
   const [sortOrder, setSortOrder] = useState('default')
+
+  async function handleTogglePantry(itemName, haveIt) {
+    await api.setPantryItem(itemName, haveIt)
+    refreshShoppingList()
+  }
 
   if (!list) return null
 
@@ -59,7 +66,7 @@ export default function ShoppingListView({ list, onTogglePantry }) {
                 type="checkbox"
                 id={id}
                 checked={item.haveIt}
-                onChange={(e) => onTogglePantry(item.item, e.target.checked)}
+                onChange={(e) => handleTogglePantry(item.item, e.target.checked)}
               />
               <div className="shop-item-main">
                 <label htmlFor={id} className="shop-item-name">
@@ -85,22 +92,5 @@ export default function ShoppingListView({ list, onTogglePantry }) {
       </ul>
     </section>
   )
-}
-
-ShoppingListView.propTypes = {
-  list: PropTypes.shape({
-    recipeCount: PropTypes.number,
-    list: PropTypes.arrayOf(
-      PropTypes.shape({
-        item: PropTypes.string.isRequired,
-        haveIt: PropTypes.bool.isRequired,
-        quantity: PropTypes.number,
-        unit: PropTypes.string,
-        recipeQuantity: PropTypes.number,
-        fromRecipes: PropTypes.arrayOf(PropTypes.string).isRequired,
-      })
-    ),
-  }),
-  onTogglePantry: PropTypes.func.isRequired,
 }
 

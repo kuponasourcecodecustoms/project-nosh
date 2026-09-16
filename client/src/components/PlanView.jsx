@@ -1,9 +1,31 @@
 import PropTypes from 'prop-types'
 import PlanDay from './PlanDay.jsx'
+import { api } from '../api.js'
+import { usePlan } from '../hooks/usePlan.js'
 import { todayIndex } from '../util.js'
 
-export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes, onClearPlan }) {
+export default function PlanView({ onAddSlot }) {
+  const { plan, refreshPlan } = usePlan()
+
+  async function handleRemoveSlot(dayIndex, mealSlot) {
+    await api.clearPlanSlot(dayIndex, mealSlot)
+    refreshPlan()
+  }
+
+  async function handleUpdateServes(dayIndex, mealSlot, recipeId, serves) {
+    if (!Number.isInteger(serves) || serves < 1) return
+    await api.setPlanSlot(dayIndex, mealSlot, recipeId, serves)
+    refreshPlan()
+  }
+
+  async function handleClearPlan() {
+    if (!confirm('Clear every meal planned for this week?')) return
+    await api.clearPlan()
+    refreshPlan()
+  }
+
   if (!plan) return null
+
   const today = todayIndex()
 
   return (
@@ -17,13 +39,13 @@ export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes
             day={day}
             isToday={day.dayIndex === today}
             onAddSlot={onAddSlot}
-            onRemoveSlot={onRemoveSlot}
-            onUpdateServes={onUpdateServes}
+            onRemoveSlot={handleRemoveSlot}
+            onUpdateServes={handleUpdateServes}
           />
         ))}
       </div>
 
-      <button type="button" className="link-btn link-btn-muted" onClick={onClearPlan}>
+      <button type="button" className="link-btn link-btn-muted" onClick={handleClearPlan}>
         Clear the whole week
       </button>
     </section>
@@ -31,18 +53,6 @@ export default function PlanView({ plan, onAddSlot, onRemoveSlot, onUpdateServes
 }
 
 PlanView.propTypes = {
-  plan: PropTypes.shape({
-    week: PropTypes.arrayOf(
-      PropTypes.shape({
-        dayIndex: PropTypes.number.isRequired,
-        dayName: PropTypes.string.isRequired,
-        meals: PropTypes.object.isRequired,
-      })
-    ).isRequired,
-  }),
   onAddSlot: PropTypes.func.isRequired,
-  onRemoveSlot: PropTypes.func.isRequired,
-  onUpdateServes: PropTypes.func.isRequired,
-  onClearPlan: PropTypes.func.isRequired,
 }
 
