@@ -15,15 +15,18 @@ export default function App() {
   const [showAddRecipe, setShowAddRecipe] = useState(false)
   const [recipesRefreshToken, setRecipesRefreshToken] = useState(0)
   const [planRefreshToken, setPlanRefreshToken] = useState(0)
+  const [shoppingRefreshToken, setShoppingRefreshToken] = useState(0)
 
   const handleSwitchView = useCallback((view) => {
     setActiveView(view)
+    if (view === 'shopping') setShoppingRefreshToken((token) => token + 1)
     if (view !== 'recipes') setPendingPlan(null)
   }, [])
 
   async function handleAssignSlot(dayIndex, mealSlot, recipeId, serves) {
     await api.setPlanSlot(dayIndex, mealSlot, recipeId, serves)
     setPlanRefreshToken((token) => token + 1)
+    setShoppingRefreshToken((token) => token + 1)
   }
 
   async function handleQuickAddToPending(recipe) {
@@ -70,8 +73,13 @@ export default function App() {
           onQuickAddToPending={handleQuickAddToPending}
           onAddRecipe={() => setShowAddRecipe(true)}
         />
-        <PlanView active={activeView === 'plan'} refreshToken={planRefreshToken} onAddSlot={handleRequestSlot} />
-        <ShoppingListView active={activeView === 'shopping'} />
+        <PlanView
+          active={activeView === 'plan'}
+          refreshToken={planRefreshToken}
+          onPlanChanged={() => setShoppingRefreshToken((token) => token + 1)}
+          onAddSlot={handleRequestSlot}
+        />
+        <ShoppingListView active={activeView === 'shopping'} refreshToken={shoppingRefreshToken} />
       </main>
       <RecipeDetailModal
         recipe={detailRecipe}

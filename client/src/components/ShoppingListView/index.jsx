@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './styles.module.css'
 import { api } from '../../api.js'
 import { useShoppingList } from '../../hooks/useShoppingList.js'
 import { capitalise } from '../../util.js'
 
-export default function ShoppingListView({ active }) {
+export default function ShoppingListView({ active, refreshToken }) {
   const { list, refreshShoppingList } = useShoppingList()
   const [sortOrder, setSortOrder] = useState('default')
+
+  useEffect(() => {
+    if (active) refreshShoppingList()
+  }, [active, refreshShoppingList, refreshToken])
 
   async function handleTogglePantry(itemName, haveIt) {
     await api.setPantryItem(itemName, haveIt)
@@ -96,5 +100,6 @@ export default function ShoppingListView({ active }) {
 
 ShoppingListView.propTypes = {
   active: PropTypes.bool.isRequired,
+  refreshToken: PropTypes.number.isRequired,
 }
 

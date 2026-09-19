@@ -6,7 +6,7 @@ import { api } from '../../api.js'
 import { usePlan } from '../../hooks/usePlan.js'
 import { todayIndex } from '../../util.js'
 
-export default function PlanView({ active, refreshToken, onAddSlot }) {
+export default function PlanView({ active, refreshToken, onPlanChanged, onAddSlot }) {
   const { plan, refreshPlan } = usePlan()
 
   useEffect(() => {
@@ -16,18 +16,21 @@ export default function PlanView({ active, refreshToken, onAddSlot }) {
   async function handleRemoveSlot(dayIndex, mealSlot) {
     await api.clearPlanSlot(dayIndex, mealSlot)
     refreshPlan()
+    onPlanChanged()
   }
 
   async function handleUpdateServes(dayIndex, mealSlot, recipeId, serves) {
     if (!Number.isInteger(serves) || serves < 1) return
     await api.setPlanSlot(dayIndex, mealSlot, recipeId, serves)
     refreshPlan()
+    onPlanChanged()
   }
 
   async function handleClearPlan() {
     if (!confirm('Clear every meal planned for this week?')) return
     await api.clearPlan()
     refreshPlan()
+    onPlanChanged()
   }
 
   if (!plan) return null
@@ -59,6 +62,7 @@ export default function PlanView({ active, refreshToken, onAddSlot }) {
 PlanView.propTypes = {
   active: PropTypes.bool.isRequired,
   refreshToken: PropTypes.number.isRequired,
+  onPlanChanged: PropTypes.func.isRequired,
   onAddSlot: PropTypes.func.isRequired,
 }
 
