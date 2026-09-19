@@ -1,0 +1,98 @@
+.detail-title {
+    margin-bottom: 2px;
+}
+
+.detail-meta {
+    color: var(--text-muted);
+    margin-bottom: 14px;
+}
+
+.detail-section-title {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1rem;
+    margin: 18px 0 8px;
+}
+
+.plan-picker {
+    display: grid;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.detail-ing-list,
+.detail-method-list {
+    margin: 0;
+    padding-left: 1.2em;
+}
+
+.detail-ing-list li,
+.detail-method-list li {
+    margin-bottom: 6px;
+}
+
+.plan-picker-row {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.plan-picker-row select {
+    flex: 1;
+    height: 42px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control);
+    background: var(--surface-sunk);
+}
+
+.serves-picker {
+    display: block;
+    min-width: 76px;
+}
+
+.serves-picker span {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 700;
+    margin-bottom: 3px;
+}
+
+.serves-picker input {
+    width: 100%;
+    height: 42px;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control);
+    background: var(--surface-sunk);
+}
+
+.modalActions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+.modal {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card) var(--radius-card) var(--radius-card) var(--radius-card);
+    padding: 22px;
+    background: var(--surface);
+    max-width: 520px;
+    width: calc(100vw - 40px);
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    box-shadow: 0 12px 40px rgba(46, 55, 62, 0.25);
+}
+
+.modal::backdrop {
+    background: rgba(46, 55, 62, 0.45);
+}
+
+.tagRow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag { font-size: 0.72rem; font-weight: 800; padding: 3px 9px; border-radius: var(--radius-pill); transform: rotate(-1deg); display: inline-block; }
+.tag:nth-child(3n+2) { transform: rotate(1deg); }
+.tagDiet { background: #E4F7EE; color: var(--nosh-green-dark); }
+.tagMeal { background: #E4F1EF; color: var(--deep-teal); }

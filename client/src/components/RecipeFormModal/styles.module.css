@@ -1,0 +1,98 @@
+.modal {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card) var(--radius-card) var(--radius-card) var(--radius-card);
+    padding: 22px;
+    background: var(--surface);
+    max-width: 520px;
+    width: calc(100vw - 40px);
+    max-height: calc(100vh - 60px);
+    overflow-y: auto;
+    box-shadow: 0 12px 40px rgba(46, 55, 62, 0.25);
+}
+
+.modal::backdrop {
+    background: rgba(46, 55, 62, 0.45);
+}
+
+.field {
+    display: block;
+    margin-bottom: 14px;
+}
+
+.field-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.ingredient-rows {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 8px;
+}
+
+.ingredient-row {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 6px;
+}
+
+.field > span,
+.field-label-block {
+    display: block;
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 5px;
+}
+
+.field input[type="text"],
+.field input[type="number"],
+.field textarea {
+    width: 100%;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control);
+    background: var(--surface-sunk);
+}
+
+fieldset.field {
+    border: none;
+    padding: 0;
+    margin: 0 0 14px;
+}
+
+fieldset legend {
+    font-weight: 700;
+    font-size: 0.88rem;
+    margin-bottom: 6px;
+    padding: 0;
+}
+
+.ingredient-row input {
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-sunk);
+    width: 100%;
+}
+
+.form-error {
+    background: #FFF0EA;
+    color: #A8431B;
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.88rem;
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 18px;
+}
+
+@media (max-width: 380px) {
+    .ingredient-row {
+        grid-template-columns: 1fr 1fr;
+    }
+}

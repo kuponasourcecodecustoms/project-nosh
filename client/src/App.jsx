@@ -1,11 +1,11 @@
 import { useCallback, useState } from 'react'
-import TopBar from './components/TopBar.jsx'
-import TabBar from './components/TabBar.jsx'
-import RecipesView from './components/RecipesView.jsx'
-import PlanView from './components/PlanView.jsx'
-import ShoppingListView from './components/ShoppingListView.jsx'
-import RecipeDetailModal from './components/RecipeDetailModal.jsx'
-import RecipeFormModal from './components/RecipeFormModal.jsx'
+import TopBar from './components/TopBar/index.jsx'
+import TabBar from './components/TabBar/index.jsx'
+import RecipesView from './components/RecipesView/index.jsx'
+import PlanView from './components/PlanView/index.jsx'
+import ShoppingListView from './components/ShoppingListView/index.jsx'
+import RecipeDetailModal from './components/RecipeDetailModal/index.jsx'
+import RecipeFormModal from './components/RecipeFormModal/index.jsx'
 import { api } from './api.js'
 
 export default function App() {
@@ -13,6 +13,8 @@ export default function App() {
   const [pendingPlan, setPendingPlan] = useState(null) // { dayIndex, mealSlot }
   const [detailRecipe, setDetailRecipe] = useState(null)
   const [showAddRecipe, setShowAddRecipe] = useState(false)
+  const [recipesRefreshToken, setRecipesRefreshToken] = useState(0)
+  const [planRefreshToken, setPlanRefreshToken] = useState(0)
 
   const handleSwitchView = useCallback((view) => {
     setActiveView(view)
@@ -21,6 +23,7 @@ export default function App() {
 
   async function handleAssignSlot(dayIndex, mealSlot, recipeId, serves) {
     await api.setPlanSlot(dayIndex, mealSlot, recipeId, serves)
+    setPlanRefreshToken((token) => token + 1)
   }
 
   async function handleQuickAddToPending(recipe) {
@@ -44,41 +47,38 @@ export default function App() {
   async function handleSaveRecipe(recipe) {
     await api.addRecipe(recipe)
     setShowAddRecipe(false)
+    setRecipesRefreshToken((token) => token + 1)
   }
 
   async function handleDeleteRecipe(id) {
     await api.deleteRecipe(id)
     setDetailRecipe(null)
+    setRecipesRefreshToken((token) => token + 1)
   }
 
   return (
     <div className="app-shell">
       <TopBar />
       <TabBar activeView={activeView} onChange={handleSwitchView} shoppingNeedCount={0} />
-
       <main id="views">
-        {activeView === 'recipes' && (
-          <RecipesView
-            pendingPlan={pendingPlan}
-            onCancelPending={() => setPendingPlan(null)}
-            onOpenRecipe={setDetailRecipe}
-            onQuickAddToPending={handleQuickAddToPending}
-            onAddRecipe={() => setShowAddRecipe(true)}
-          />
-        )}
-
-        {activeView === 'plan' && <PlanView onAddSlot={handleRequestSlot} />}
-
-        {activeView === 'shopping' && <ShoppingListView />}
+        <RecipesView
+          active={activeView === 'recipes'}
+          refreshToken={recipesRefreshToken}
+          pendingPlan={pendingPlan}
+          onCancelPending={() => setPendingPlan(null)}
+          onOpenRecipe={setDetailRecipe}
+          onQuickAddToPending={handleQuickAddToPending}
+          onAddRecipe={() => setShowAddRecipe(true)}
+        />
+        <PlanView active={activeView === 'plan'} refreshToken={planRefreshToken} onAddSlot={handleRequestSlot} />
+        <ShoppingListView active={activeView === 'shopping'} />
       </main>
-
       <RecipeDetailModal
         recipe={detailRecipe}
         onClose={() => setDetailRecipe(null)}
         onAddToPlan={handleAddToPlanFromDetail}
         onDeleteRecipe={handleDeleteRecipe}
       />
-
       <RecipeFormModal open={showAddRecipe} onClose={() => setShowAddRecipe(false)} onSave={handleSaveRecipe} />
     </div>
   )

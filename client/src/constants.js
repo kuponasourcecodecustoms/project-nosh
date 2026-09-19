@@ -15,3 +15,5 @@ export const MEAL_TYPE_OPTIONS = [
   { key: 'dessert', label: 'Dessert' },
   { key: 'own', label: 'Own recipes' },
 ]
+
+export const RECIPE_FORM_MEAL_TYPE_OPTIONS = MEAL_TYPE_OPTIONS.filter((option) => option.key !== 'own')

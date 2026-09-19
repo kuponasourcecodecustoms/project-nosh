@@ -63,7 +63,7 @@ app.post("/api/recipes", (req, res) => {
     id,
     b.name,
     b.cuisine || null,
-    JSON.stringify(Array.isArray(b.mealType) ? b.mealType : []),
+    JSON.stringify(['own']),
     JSON.stringify(dietary),
     JSON.stringify(Array.isArray(b.tags) ? b.tags : []),
     Number(b.serves) || 2,

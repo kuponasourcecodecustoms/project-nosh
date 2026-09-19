@@ -1,9 +1,11 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
-import { api } from '../api.js'
-import { useShoppingList } from '../hooks/useShoppingList.js'
-import { capitalise } from '../util.js'
+import styles from './styles.module.css'
+import { api } from '../../api.js'
+import { useShoppingList } from '../../hooks/useShoppingList.js'
+import { capitalise } from '../../util.js'
 
-export default function ShoppingListView() {
+export default function ShoppingListView({ active }) {
   const { list, refreshShoppingList } = useShoppingList()
   const [sortOrder, setSortOrder] = useState('default')
 
@@ -16,7 +18,7 @@ export default function ShoppingListView() {
 
   if (!list.recipeCount) {
     return (
-      <section className="view is-active">
+      <section className={`view${active ? ' is-active' : ''}`}>
         <p className="view-lede">
           Everything your planned meals need, added up so you&rsquo;re not buying two of what you need one of.
         </p>
@@ -27,7 +29,7 @@ export default function ShoppingListView() {
 
   if (!list.list.length) {
     return (
-      <section className="view is-active">
+      <section className={`view${active ? ' is-active' : ''}`}>
         <p className="view-lede">
           Everything your planned meals need, added up so you&rsquo;re not buying two of what you need one of.
         </p>
@@ -43,11 +45,10 @@ export default function ShoppingListView() {
   })
 
   return (
-    <section className="view is-active">
+    <section className={`view${active ? ' is-active' : ''}`}>
       <p className="view-lede">
         Everything your planned meals need, added up so you&rsquo;re not buying two of what you need one of.
       </p>
-
       <div className="view-sort-row">
         <label htmlFor="shopping-sort">Sort by:</label>
         <select id="shopping-sort" value={sortOrder} onChange={(e) => setSortOrder(e.target.value)}>
@@ -56,35 +57,34 @@ export default function ShoppingListView() {
           <option value="za">Ingredient (Z-A)</option>
         </select>
       </div>
-
-      <ul className="shop-list">
+      <ul className={styles.shopList}>
         {sortedItems.map((item) => {
           const id = 'shop-' + item.item.toLowerCase().replace(/[^a-z0-9]+/g, '-')
           return (
-            <li className={'shop-item' + (item.haveIt ? ' is-have' : '')} key={item.item}>
+            <li className={`${styles.shopItem}${item.haveIt ? ` ${styles.isHave}` : ''}`} key={item.item}>
               <input
                 type="checkbox"
                 id={id}
                 checked={item.haveIt}
                 onChange={(e) => handleTogglePantry(item.item, e.target.checked)}
               />
-              <div className="shop-item-main">
-                <label htmlFor={id} className="shop-item-name">
+              <div className={styles.shopItemMain}>
+                <label htmlFor={id} className={styles.shopItemName}>
                   {capitalise(item.item)}
                 </label>
                 {item.quantity !== null && (
-                  <div className="shop-item-amounts">
+                  <div className={styles.shopItemAmounts}>
                     <span>
                       <small>Recipe amount</small>
                       {item.recipeQuantity}{item.unit ? ` ${item.unit}` : ''}
                     </span>
-                    <span className="shop-item-qty">
+                    <span className={styles.shopItemQty}>
                       <small>Shopping amount</small>
                       {item.quantity}{item.unit ? ` ${item.unit}` : ''}
                     </span>
                   </div>
                 )}
-                <div className="shop-item-sources">For: {item.fromRecipes.join(', ')}</div>
+                <div className={styles.shopItemSources}>For: {item.fromRecipes.join(', ')}</div>
               </div>
             </li>
           )
@@ -92,5 +92,9 @@ export default function ShoppingListView() {
       </ul>
     </section>
   )
+}
+
+ShoppingListView.propTypes = {
+  active: PropTypes.bool.isRequired,
 }
 

@@ -1,11 +1,17 @@
 import PropTypes from 'prop-types'
-import PlanDay from './PlanDay.jsx'
-import { api } from '../api.js'
-import { usePlan } from '../hooks/usePlan.js'
-import { todayIndex } from '../util.js'
+import { useEffect } from 'react'
+import styles from './styles.module.css'
+import PlanDay from '../PlanDay/index.jsx'
+import { api } from '../../api.js'
+import { usePlan } from '../../hooks/usePlan.js'
+import { todayIndex } from '../../util.js'
 
-export default function PlanView({ onAddSlot }) {
+export default function PlanView({ active, refreshToken, onAddSlot }) {
   const { plan, refreshPlan } = usePlan()
+
+  useEffect(() => {
+    if (refreshToken > 0) refreshPlan()
+  }, [refreshPlan, refreshToken])
 
   async function handleRemoveSlot(dayIndex, mealSlot) {
     await api.clearPlanSlot(dayIndex, mealSlot)
@@ -29,10 +35,9 @@ export default function PlanView({ onAddSlot }) {
   const today = todayIndex()
 
   return (
-    <section className="view is-active">
+    <section className={`view${active ? ' is-active' : ''}`}>
       <p className="view-lede">Fill in the week as it suits you. Skip meals you don&rsquo;t need to plan for.</p>
-
-      <div className="plan-days">
+      <div className={styles.planDays}>
         {plan.week.map((day) => (
           <PlanDay
             key={day.dayIndex}
@@ -44,7 +49,6 @@ export default function PlanView({ onAddSlot }) {
           />
         ))}
       </div>
-
       <button type="button" className="link-btn link-btn-muted" onClick={handleClearPlan}>
         Clear the whole week
       </button>
@@ -53,6 +57,8 @@ export default function PlanView({ onAddSlot }) {
 }
 
 PlanView.propTypes = {
+  active: PropTypes.bool.isRequired,
+  refreshToken: PropTypes.number.isRequired,
   onAddSlot: PropTypes.func.isRequired,
 }
 

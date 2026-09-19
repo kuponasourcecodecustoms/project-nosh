@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
-import ChipRow from './ChipRow.jsx'
-import { DIETARY_TAGS, MEAL_TYPE_OPTIONS } from '../constants.js'
+import styles from './styles.module.css'
+import ChipRow from '../ChipRow/index.jsx'
+import { DIETARY_TAGS, RECIPE_FORM_MEAL_TYPE_OPTIONS } from '../../constants.js'
 
 const BLANK_INGREDIENT = { item: '', quantity: '', unit: '' }
 
@@ -103,11 +104,10 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
   }
 
   return (
-    <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
+    <dialog className={styles.modal} ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
       <form onSubmit={handleSubmit}>
         <h2>Add your own recipe</h2>
-
-        <label className="field">
+        <label className={styles.field}>
           <span>Recipe name</span>
           <input
             type="text"
@@ -118,32 +118,29 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
           />
         </label>
 
-        <div className="field-grid">
-          <label className="field">
+        <div className={styles.fieldGrid}>
+          <label className={styles.field}>
             <span>Serves</span>
             <input type="number" min="1" required value={serves} onChange={(e) => setServes(e.target.value)} />
           </label>
-          <label className="field">
+          <label className={styles.field}>
             <span>Cuisine (optional)</span>
             <input type="text" placeholder="e.g. british" value={cuisine} onChange={(e) => setCuisine(e.target.value)} />
           </label>
         </div>
-
-        <fieldset className="field">
+        <fieldset className={styles.field}>
           <legend>Meal type</legend>
-          <ChipRow options={MEAL_TYPE_OPTIONS} selected={mealType} onToggle={toggleMealType} ariaLabel="Meal type" />
+          <ChipRow options={RECIPE_FORM_MEAL_TYPE_OPTIONS} selected={mealType} onToggle={toggleMealType} ariaLabel="Meal type" />
         </fieldset>
-
-        <fieldset className="field">
+        <fieldset className={styles.field}>
           <legend>Dietary</legend>
           <ChipRow options={DIETARY_TAGS} selected={dietary} onToggle={toggleDietary} ariaLabel="Dietary" />
         </fieldset>
-
-        <div className="field">
-          <span className="field-label-block">Ingredients</span>
-          <div className="ingredient-rows">
+        <div className={styles.field}>
+          <span className={styles.fieldLabelBlock}>Ingredients</span>
+          <div className={styles.ingredientRows}>
             {ingredients.map((ing, i) => (
-              <div className="ingredient-row" key={i}>
+              <div className={styles.ingredientRow} key={i}>
                 <input
                   type="text"
                   placeholder="Ingredient (e.g. onion)"
@@ -178,8 +175,7 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
             + Add another ingredient
           </button>
         </div>
-
-        <label className="field">
+        <label className={styles.field}>
           <span>Method</span>
           <textarea
             rows={5}
@@ -189,10 +185,8 @@ export default function RecipeFormModal({ open, onClose, onSave }) {
             onChange={(e) => setMethod(e.target.value)}
           />
         </label>
-
-        {error && <p className="form-error">{error}</p>}
-
-        <div className="modal-actions">
+        {error && <p className={styles.formError}>{error}</p>}
+        <div className={styles.modalActions}>
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Cancel
           </button>

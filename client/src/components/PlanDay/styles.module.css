@@ -1,0 +1,115 @@
+.plan-day {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+}
+
+.plan-day-body {
+    padding: 4px 16px 12px;
+    display: none;
+}
+
+.plan-day.is-open .plan-day-body {
+    display: block;
+}
+
+.meal-slot-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+    gap: 10px;
+}
+
+.plan-day-head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    background: var(--surface-sunk);
+    border: none;
+    padding: 12px 16px;
+    cursor: pointer;
+    text-align: left;
+}
+
+.plan-day-bar {
+    width: 5px;
+    align-self: stretch;
+    border-radius: 3px;
+    background: var(--nosh-green);
+    flex-shrink: 0;
+}
+
+.plan-day-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    flex: 1;
+}
+
+.plan-day-summary {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.today-pill {
+    background: var(--nosh-green);
+    color: var(--charcoal);
+    font-size: 0.7rem;
+    font-weight: 800;
+    padding: 2px 9px;
+    border-radius: var(--radius-pill);
+    flex-shrink: 0;
+}
+
+.plan-day.is-open .plan-day-head {
+    border-bottom: 1px solid var(--border);
+}
+
+.meal-slot-row:last-child {
+    border-bottom: none;
+}
+
+.meal-slot-label {
+    width: 84px;
+    flex-shrink: 0;
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: capitalize;
+}
+
+.meal-slot-filled {
+    flex: 1;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.meal-slot-recipe-name {
+    font-weight: 700;
+}
+
+.planned-serves {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.planned-serves span {
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    font-weight: 700;
+}
+
+.planned-serves input {
+    width: 58px;
+    padding: 5px 7px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface-sunk);
+}

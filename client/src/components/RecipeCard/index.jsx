@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types'
-import { capitalise, dietaryLabel } from '../util.js'
+import styles from './styles.module.css'
+import { capitalise, dietaryLabel } from '../../util.js'
 
 export default function RecipeCard({ recipe, isPendingSlot, onOpen, onQuickAdd }) {
   const handleQuickAdd = (e) => {
@@ -9,7 +10,7 @@ export default function RecipeCard({ recipe, isPendingSlot, onOpen, onQuickAdd }
 
   return (
     <article
-      className="recipe-card"
+      className={styles.recipeCard}
       tabIndex={0}
       role="button"
       aria-label={`${recipe.name} — view recipe`}
@@ -21,35 +22,33 @@ export default function RecipeCard({ recipe, isPendingSlot, onOpen, onQuickAdd }
         }
       }}
     >
-      <div className="recipe-card-top">
+      <div className={styles.recipeCardTop}>
         <div>
-          <h3 className="recipe-name">{recipe.name}</h3>
-          <div className="recipe-meta">
+          <h3 className={styles.recipeName}>{recipe.name}</h3>
+          <div className={styles.recipeMeta}>
             {recipe.cuisine ? `Serves ${recipe.serves}, ${capitalise(recipe.cuisine)}` : `Serves ${recipe.serves}`}
           </div>
         </div>
       </div>
-
-      <div className="tag-row">
+      <div className={styles.tagRow}>
         {recipe.mealType.map((m) => (
-          <span key={m} className="tag tag-meal">
+          <span key={m} className={`${styles.tag} ${styles.tagMeal}`}>
             {capitalise(m)}
           </span>
         ))}
         {recipe.dietary.map((d) => (
-          <span key={d} className="tag tag-diet">
+          <span key={d} className={`${styles.tag} ${styles.tagDiet}`}>
             {dietaryLabel(d)}
           </span>
         ))}
         {recipe.tags.map((t) => (
-          <span key={t} className="tag tag-note">
+          <span key={t} className={`${styles.tag} ${styles.tagNote}`}>
             {capitalise(t.replace(/-/g, ' '))}
           </span>
         ))}
-        {recipe.isCustom && <span className="tag tag-custom">Yours</span>}
+        {recipe.isCustom && <span className={`${styles.tag} ${styles.tagCustom}`}>Yours</span>}
       </div>
-
-      <div className="recipe-card-actions">
+      <div className={styles.recipeCardActions}>
         <button type="button" className="btn btn-primary btn-sm" onClick={handleQuickAdd}>
           {isPendingSlot ? 'Add to this slot' : 'View & add to plan'}
         </button>

@@ -1,0 +1,74 @@
+.recipe-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 16px 18px;
+    cursor: pointer;
+}
+
+.recipe-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.recipe-name {
+    font-family: var(--font-head);
+    font-weight: 800;
+    font-size: 1.08rem;
+    margin: 0;
+}
+
+.recipe-meta {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 2px;
+}
+
+.recipe-card-actions {
+    margin-top: 12px;
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.tag-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 10px;
+}
+
+.tag {
+    font-size: 0.72rem;
+    font-weight: 800;
+    padding: 3px 9px;
+    border-radius: var(--radius-pill);
+    transform: rotate(-1deg);
+    display: inline-block;
+}
+
+.tag:nth-child(3n+2) {
+    transform: rotate(1deg);
+}
+
+.tag-diet {
+    background: #E4F7EE;
+    color: var(--nosh-green-dark);
+}
+
+.tag-meal {
+    background: #E4F1EF;
+    color: var(--deep-teal);
+}
+
+.tag-note {
+    background: #FBF7DE;
+    color: #8A7F16;
+}
+
+.tag-custom {
+    background: #FFEDE4;
+    color: #B8501F;
+}

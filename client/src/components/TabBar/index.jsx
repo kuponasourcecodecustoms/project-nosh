@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types'
 import { useState } from 'react'
-import logo from '../img/Nosh Logo.png'
+import styles from './styles.module.css'
+const logo = '/img/NoshLogo.png'
 
 const TABS = [
   { key: 'recipes', icon: '🍲', label: 'Recipes' },
@@ -17,34 +18,33 @@ export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
   }
 
   return (
-    <nav className={'tabbar' + (menuOpen ? ' is-open' : '')} aria-label="Main sections">
-      <img src={logo} alt="Nosh" className="brand-logo mobile-wordmark" />
+    <nav className={`${styles.tabbar}${menuOpen ? ` ${styles.isOpen}` : ''}`} aria-label="Main sections">
+      <img src={logo} alt="Nosh" className={`${styles.brandLogo} ${styles.mobileWordmark}`} />
       <button
         type="button"
-        className="menu-toggle"
+        className={styles.menuToggle}
         aria-expanded={menuOpen}
         aria-controls="main-section-menu"
         onClick={() => setMenuOpen((open) => !open)}
       >
-        <span className="menu-toggle-icon" aria-hidden="true">☰</span>
+        <span className={styles.menuToggleIcon} aria-hidden="true">☰</span>
         Menu
       </button>
-
-      <div className="tab-menu" id="main-section-menu">
+      <div className={styles.tabMenu} id="main-section-menu">
         {TABS.map((tab) => (
           <button
             key={tab.key}
             type="button"
-            className={'tab-btn' + (activeView === tab.key ? ' is-active' : '')}
+            className={`${styles.tabBtn}${activeView === tab.key ? ` ${styles.isActive}` : ''}`}
             aria-current={activeView === tab.key ? 'page' : undefined}
             onClick={() => handleChange(tab.key)}
           >
-            <span className="tab-icon" aria-hidden="true">
+            <span className={styles.tabIcon} aria-hidden="true">
               {tab.icon}
             </span>
             {tab.label}
             {tab.key === 'shopping' && shoppingNeedCount > 0 && (
-              <span className="tab-count">{shoppingNeedCount}</span>
+              <span className={styles.tabCount}>{shoppingNeedCount}</span>
             )}
           </button>
         ))}

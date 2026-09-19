@@ -1,0 +1,75 @@
+.filter-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    padding: 14px 16px;
+    margin-bottom: 18px;
+}
+
+.filter-row {
+    margin-bottom: 10px;
+}
+
+.filter-row:last-child {
+    margin-bottom: 0;
+}
+
+.recipe-list {
+    display: grid;
+    gap: 14px;
+}
+
+.planning-banner {
+    background: #FFF3EC;
+    border: 1.5px solid var(--flame-coral);
+    color: var(--charcoal);
+    border-radius: var(--radius-control);
+    padding: 10px 14px;
+    margin-bottom: 14px;
+    font-size: 0.92rem;
+}
+
+.sort-row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+}
+
+.sort-row label {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+
+.sort-row select {
+    padding: 6px 9px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-control);
+    background: var(--surface-sunk);
+    color: var(--text);
+}
+
+.filter-search-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filter-search-row input {
+    min-width: 0;
+    flex: 1;
+}
+
+.filter-search-row .link-btn {
+    flex: none;
+    white-space: nowrap;
+}
+
+.filter-label {
+    font-weight: 700;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    display: block;
+    margin-bottom: 6px;
+}

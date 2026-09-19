@@ -3,6 +3,7 @@ const BASE = '/api'
 async function request(path, options = {}) {
   const res = await fetch(`${BASE}${path}`, {
     headers: { 'Content-Type': 'application/json' },
+    cache: 'no-store',
     ...options,
   })
   if (!res.ok) {
@@ -21,7 +22,11 @@ async function request(path, options = {}) {
 
 export const api = {
   getRecipes: (params) => request(`/recipes?${new URLSearchParams(params).toString()}`),
-  addRecipe: (recipe) => request('/recipes', { method: 'POST', body: JSON.stringify(recipe) }),
+  addRecipe: (recipe) =>
+    request('/recipes', {
+      method: 'POST',
+      body: JSON.stringify({ ...recipe, mealType: ['own'] }),
+    }),
   deleteRecipe: (id) => request(`/recipes/${id}`, { method: 'DELETE' }),
 
   getPreferences: () => request('/preferences'),

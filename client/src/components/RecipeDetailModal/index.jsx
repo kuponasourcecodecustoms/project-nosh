@@ -1,7 +1,8 @@
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
-import { DAY_NAMES, MEAL_SLOTS } from '../constants.js'
-import { capitalise, dietaryLabel, formatIngredient } from '../util.js'
+import styles from './styles.module.css'
+import { DAY_NAMES, MEAL_SLOTS } from '../../constants.js'
+import { capitalise, dietaryLabel, formatIngredient } from '../../util.js'
 
 export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDeleteRecipe }) {
   const dialogRef = useRef(null)
@@ -36,7 +37,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
 
   if (!recipe) {
     // Keep the dialog mounted (closed) so the closing animation/native behaviour works cleanly.
-    return <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick} />
+    return <dialog className={styles.modal} ref={dialogRef} onClose={onClose} onClick={handleDialogClick} />
   }
 
   const handleAdd = async () => {
@@ -46,43 +47,39 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
   }
 
   return (
-    <dialog ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
+    <dialog className={styles.modal} ref={dialogRef} onClose={onClose} onClick={handleDialogClick}>
       <div>
-        <h2 className="detail-title">{recipe.name}</h2>
-        <p className="detail-meta">
+        <h2 className={styles.detailTitle}>{recipe.name}</h2>
+        <p className={styles.detailMeta}>
           {recipe.cuisine ? `Serves ${recipe.serves}, ${capitalise(recipe.cuisine)}` : `Serves ${recipe.serves}`}
         </p>
-
-        <div className="tag-row">
+        <div className={styles.tagRow}>
           {recipe.mealType.map((m) => (
-            <span key={m} className="tag tag-meal">
+            <span key={m} className={`${styles.tag} ${styles.tagMeal}`}>
               {capitalise(m)}
             </span>
           ))}
           {recipe.dietary.map((d) => (
-            <span key={d} className="tag tag-diet">
+            <span key={d} className={`${styles.tag} ${styles.tagDiet}`}>
               {dietaryLabel(d)}
             </span>
           ))}
         </div>
-
-        <h3 className="detail-section-title">Ingredients</h3>
-        <ul className="detail-ing-list">
+        <h3 className={styles.detailSectionTitle}>Ingredients</h3>
+        <ul className={styles.detailIngList}>
           {recipe.ingredients.map((ing, i) => (
             <li key={i}>{formatIngredient(ing)}</li>
           ))}
         </ul>
-
-        <h3 className="detail-section-title">Method</h3>
-        <ol className="detail-method-list">
+        <h3 className={styles.detailSectionTitle}>Method</h3>
+        <ol className={styles.detailMethodList}>
           {recipe.method.map((step, i) => (
             <li key={i}>{step}</li>
           ))}
         </ol>
-
-        <h3 className="detail-section-title">Add to this week&rsquo;s plan</h3>
-        <div className="plan-picker">
-          <div className="plan-picker-row">
+        <h3 className={styles.detailSectionTitle}>Add to this week&rsquo;s plan</h3>
+        <div className={styles.planPicker}>
+          <div className={styles.planPickerRow}>
             <select value={dayIndex} onChange={(e) => setDayIndex(Number(e.target.value))}>
               {DAY_NAMES.map((d, i) => (
                 <option key={d} value={i}>
@@ -97,7 +94,7 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
                 </option>
               ))}
             </select>
-            <label className="serves-picker">
+            <label className={styles.servesPicker}>
               <span>Serves</span>
               <input
                 type="number"
@@ -108,10 +105,6 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
               />
             </label>
           </div>
-          <button type="button" className="btn btn-primary" onClick={handleAdd} disabled={saving}>
-            {saving ? 'Adding…' : 'Add to plan'}
-          </button>
-
           {recipe.isCustom && (
             <button
               type="button"
@@ -122,10 +115,12 @@ export default function RecipeDetailModal({ recipe, onClose, onAddToPlan, onDele
             </button>
           )}
         </div>
-
-        <div className="modal-actions">
+        <div className={styles.modalActions}>
           <button type="button" className="btn btn-ghost" onClick={onClose}>
             Close
+          </button>
+          <button type="button" className="btn btn-primary" onClick={handleAdd} disabled={saving}>
+            {saving ? 'Adding…' : 'Add to plan'}
           </button>
         </div>
       </div>

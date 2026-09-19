@@ -1,13 +1,14 @@
 import PropTypes from 'prop-types'
+import styles from './styles.module.css'
 
 export default function ChipRow({ options, selected, onToggle, ariaLabel }) {
   return (
-    <div className="chip-row" role="group" aria-label={ariaLabel}>
+    <div className={styles.chipRow} role="group" aria-label={ariaLabel}>
       {options.map((opt) => (
         <button
           key={opt.key}
           type="button"
-          className={'chip' + (selected.includes(opt.key) ? ' is-selected' : '')}
+          className={`${styles.chip}${selected.includes(opt.key) ? ` ${styles.isSelected}` : ''}`}
           onClick={() => onToggle(opt.key)}
         >
           {opt.label}

@@ -1,0 +1,22 @@
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  border-radius: var(--radius-pill);
+  padding: 6px 13px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.chip.is-selected {
+  background: var(--deep-teal);
+  border-color: var(--deep-teal);
+  color: white;
+}
