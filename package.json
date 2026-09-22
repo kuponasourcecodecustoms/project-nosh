@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Nosh meal planner - candidate demo (Enablis engineering challenge)",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "workspaces": ["client"],
   "scripts": {
     "dev": "concurrently -n API,CLIENT -c blue,green \"npm run dev:server\" \"npm run dev:client\"",

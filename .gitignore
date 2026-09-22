@@ -1,6 +1,6 @@
 node_modules/
-server/nosh.db
-server/nosh.db-shm
-server/nosh.db-wal
+server/setup/nosh.db
+server/setup/nosh.db-shm
+server/setup/nosh.db-wal
 server/public/
 *.log

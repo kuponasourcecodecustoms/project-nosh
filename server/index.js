@@ -1,7 +1,12 @@
-const path = require("path");
-const express = require("express");
-const db = require("./db");
-const { DAY_NAMES, MEAL_SLOTS, recipeRowToJson, normaliseKey, buildShoppingList } = require("./lib");
+import fs from "node:fs";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+import express from "express";
+import db from "./setup/db.js";
+import { DAY_NAMES, MEAL_SLOTS, recipeRowToJson, normaliseKey, buildShoppingList } from "./lib.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -231,7 +236,7 @@ function slugify(s) {
 // SPA fallback for any non-API route (serves the built React app in production)
 app.get(/^(?!\/api\/).*/, (req, res) => {
   const indexPath = path.join(__dirname, "public", "index.html");
-  if (!require("fs").existsSync(indexPath)) {
+  if (!fs.existsSync(indexPath)) {
     return res
       .status(200)
       .send(
@@ -247,12 +252,12 @@ const server = app.listen(PORT, () => {
   console.log(`Nosh server running at http://localhost:${PORT}`);
 });
 
-function shutdown(signal) {
+function shutdown() {
   server.close(() => {
     db.close();
     process.exit(0);
   });
 }
 
-process.once("SIGINT", () => shutdown("SIGINT"));
-process.once("SIGTERM", () => shutdown("SIGTERM"));
+process.once("SIGINT", shutdown);
+process.once("SIGTERM", shutdown);

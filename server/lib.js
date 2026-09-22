@@ -95,7 +95,7 @@ function roundQty(n) {
   return Math.round(n * 100) / 100;
 }
 
-module.exports = {
+export {
   DAY_NAMES,
   MEAL_SLOTS,
   recipeRowToJson,

@@ -1,6 +1,10 @@
-const path = require("path");
-const fs = require("fs");
-const Database = require("better-sqlite3");
+import path from "node:path";
+import fs from "node:fs";
+import Database from "better-sqlite3";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const DB_PATH = path.join(__dirname, "nosh.db");
 const SEED_PATH = path.join(__dirname, "recipes.seed.json");
@@ -89,4 +93,4 @@ function seedRecipesIfEmpty() {
 migrate();
 seedRecipesIfEmpty();
 
-module.exports = db;
+export default db;

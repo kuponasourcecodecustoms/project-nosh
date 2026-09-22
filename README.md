@@ -21,8 +21,8 @@ npm run build    # builds the React app into server/public
 npm start        # serves the API + built client together on :4000
 ```
 
-The database (`server/nosh.db`) is created and seeded from
-`server/recipes.seed.json` the first time the server runs — delete that file to
+The database (`server/setup/nosh.db`) is created and seeded from
+`server/setup/recipes.seed.json` the first time the server runs — delete that file to
 reset to a clean slate.
 
 ## What it covers (the baseline)
@@ -56,32 +56,35 @@ plan, so it persists across weeks — the app slowly learns your regular staples
 
 ```
 project-nosh/
-├── server/                    Express API (unchanged regardless of client)
-│   ├── index.js                All /api routes + static-serves server/public in prod
-│   ├── db.js                    SQLite schema + one-time seeding from the JSON file
-│   ├── lib.js                    Row<->JSON mapping + shopping-list aggregation logic
-│   └── recipes.seed.json         Copy of the provided starter recipes
-├── client/                    React (Vite) app — the only UI layer
-│   ├── vite.config.js           Dev proxy to :4000, prod build -> ../server/public
+├── server/                    Express API and production static-file server
+│   ├── index.js                All /api routes and static serving for server/public
+│   ├── lib.js                  Row-to-JSON mapping and shopping-list aggregation
+│   ├── setup/
+│   │   ├── db.js               SQLite schema, migration, and recipe seeding
+│   │   └── recipes.seed.json   Starter recipe data
+│   └── public/                 Built client assets served in production
+├── client/                    React (Vite) app — the UI layer
+│   ├── vite.config.js           Dev proxy to :4000 and build output to ../server/public
 │   ├── index.html
 │   └── src/
-│       ├── main.jsx               Entry point
-│       ├── App.jsx                 Top-level state + view routing (no router needed
-│       │                            for 3 tabs — plain useState)
-│       ├── api.js                  fetch wrapper for every /api call
-│       ├── lib.js                  Shared constants/formatters
-│       ├── hooks/useNoshData.js    Data-fetching hooks (recipes, plan, shopping list,
-│       │                            preferences), each with a refetch() escape hatch
-│       │                            used after mutations
-│       ├── components/
-│       │   ├── TopBar.jsx, TabBar.jsx, ChipRow.jsx      layout + reusable chip toggle
-│       │   ├── RecipesView.jsx, RecipeCard.jsx           browse/search/filter recipes
-│       │   ├── RecipeDetailModal.jsx                      full recipe + plan picker
-│       │   ├── RecipeFormModal.jsx                        add-your-own-recipe form
-│       │   ├── PlanView.jsx, PlanDay.jsx                  the weekly planner
-│       │   └── ShoppingListView.jsx                       aggregated list + pantry tick
-│       └── styles.css              Nosh brand tokens (colour/type from the brand slide)
-└── package.json                npm workspace root: orchestrates server + client
+│       ├── main.jsx             Entry point
+│       ├── App.jsx              Top-level state and tab view routing
+│       ├── api.js               Fetch wrapper for every /api call
+│       ├── constants.js         Shared UI constants
+│       ├── util.js              Shared formatting and display helpers
+│       ├── hooks/
+│       │   ├── useRecipes.js
+│       │   ├── usePlan.js
+│       │   ├── usePreferences.js
+│       │   └── useShoppingList.js
+│       ├── components/           Each component folder contains index.jsx and styles.module.css
+│       │   ├── TopBar, TabBar, ChipRow
+│       │   ├── RecipesView, RecipeCard
+│       │   ├── RecipeDetailModal, RecipeFormModal
+│       │   ├── PlanView, PlanDay
+│       │   └── ShoppingListView
+│       └── styles.css             Global Nosh styles and design tokens
+└── package.json                npm workspace root: orchestrates server and client
 ```
 
 **Client / API split**: the client only ever talks to `/api/*` over `fetch`; there's
@@ -89,7 +92,7 @@ no server-rendering of app state, so this API could sit behind a different clien
 later without change.
 
 **State management**: plain React hooks (`useState`, small custom hooks per resource
-in `hooks/useNoshData.js`). No Redux/Context needed at this size — `App.jsx` owns the
+in `hooks/`). No Redux/Context needed at this size — `App.jsx` owns the
 handful of cross-cutting bits (active tab, which recipe is being planned) and passes
 data + callbacks down as props.
 
