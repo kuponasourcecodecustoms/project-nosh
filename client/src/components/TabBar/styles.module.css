@@ -123,23 +123,6 @@
     background: var(--nosh-green);
 }
 
-.tab-count {
-    position: absolute;
-    top: 4px;
-    right: 22%;
-    background: var(--flame-coral);
-    color: white;
-    font-size: 0.65rem;
-    font-weight: 800;
-    min-width: 16px;
-    height: 16px;
-    border-radius: 999px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 4px;
-}
-
 @media (min-width: 640px) {
     .tabbar {
         position: static;
@@ -200,8 +183,4 @@
         border-radius: var(--radius-pill);
     }
 
-    .tab-count {
-        position: static;
-        margin-left: 2px;
-    }
 }

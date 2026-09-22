@@ -62,7 +62,7 @@ export default function App() {
   return (
     <div className="app-shell">
       <TopBar />
-      <TabBar activeView={activeView} onChange={handleSwitchView} shoppingNeedCount={0} />
+      <TabBar activeView={activeView} onChange={handleSwitchView} />
       <main id="views">
         <RecipesView
           active={activeView === 'recipes'}

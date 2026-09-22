@@ -59,6 +59,13 @@ project-nosh/
 ├── server/                    Express API and production static-file server
 │   ├── index.js                All /api routes and static serving for server/public
 │   ├── lib.js                  Row-to-JSON mapping and shopping-list aggregation
+│   ├── helpers.js              Shared route helpers such as CSV parsing and slug creation
+│   ├── routes/                 One Express router per API area
+│   │   ├── recipes.js
+│   │   ├── preferences.js
+│   │   ├── plan.js
+│   │   ├── pantry.js
+│   │   └── shoppingList.js
 │   ├── setup/
 │   │   ├── db.js               SQLite schema, migration, and recipe seeding
 │   │   └── recipes.seed.json   Starter recipe data

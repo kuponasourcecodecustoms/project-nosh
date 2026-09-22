@@ -9,7 +9,7 @@ const TABS = [
   { key: 'shopping', icon: '🧾', label: 'Shopping list' },
 ]
 
-export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
+export default function TabBar({ activeView, onChange }) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   function handleChange(view) {
@@ -43,9 +43,6 @@ export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
               {tab.icon}
             </span>
             {tab.label}
-            {tab.key === 'shopping' && shoppingNeedCount > 0 && (
-              <span className={styles.tabCount}>{shoppingNeedCount}</span>
-            )}
           </button>
         ))}
       </div>
@@ -56,6 +53,5 @@ export default function TabBar({ activeView, onChange, shoppingNeedCount }) {
 TabBar.propTypes = {
   activeView: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
-  shoppingNeedCount: PropTypes.number.isRequired,
 }
 
